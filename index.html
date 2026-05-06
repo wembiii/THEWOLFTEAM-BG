@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ръководство за играчи на Last Z</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --red: #ff0000;
+            --gray: #2d2d2d;
+            --white: #ffffff;
+            --black: #0a0a0a;
+            --golden: #ffd700;
+            --maroon: #800000;
+            --blue: #0080ff;
+            --rose: #ff007f;
+            --yellow: #ffff00;
+            --orange: #ffa500;
+            --purple: #800080;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--black); color: var(--white); line-height: 1.7; overflow-x: hidden; }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.95);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; z-index: 1000; border-bottom: 1px solid var(--red);
+        }
+        .nav-center { display: flex; gap: 20px; }
+        .nav-center a { color: var(--white); text-decoration: none; font-weight: bold; font-size: 0.9rem; }
+        .nav-center a:hover { color: var(--red); }
+        .discord-btn { width: 48px; }
+        .rules-btn { background: var(--red); color: var(--white); padding: 10px 20px; text-decoration: none; font-weight: bold; border-radius: 5px; font-size: 0.9rem; cursor: pointer; }
+
+        /* Sections */
+        section { padding: 100px 5% 50px; }
+        h2 { color: var(--red); margin-bottom: 25px; text-transform: uppercase; text-align: center; }
+
+        /* Boxes */
+        .content-box {
+            width: 100%; max-width: 1000px; margin: 0 auto 50px; background: rgba(0,0,0,0.7);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 30px; position: relative; overflow: hidden;
+        }
+        .bg-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.2; z-index: 0; }
+        .content-inner { position: relative; z-index: 1; }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: rgba(0,0,0,0.4); }
+        th { background: rgba(255,0,0,0.3); padding: 12px; text-align: left; }
+        td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        
+        /* Notes & Highlights */
+        .note { margin-top: 15px; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; font-size: 0.9rem; border: 1px solid var(--red); }
+        .text-orange { color: var(--orange); font-weight: bold; }
+        .text-purple { color: var(--purple); font-weight: bold; }
+        .text-blue { color: var(--blue); font-weight: bold; }
+        .text-red { color: var(--red); font-weight: bold; }
+        .text-mandatory { color: var(--red); font-weight: bold; }
+
+        /* Seasons & Slider */
+        .seasons-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .season-card { cursor: pointer; border: 2px solid var(--white); border-radius: 15px; overflow: hidden; transition: 0.3s; }
+        .season-card:hover { transform: scale(1.02); }
+        .season-card img { width: 100%; display: block; }
+        .slider { display: flex; gap: 20px; overflow-x: auto; padding: 20px 0; }
+        .card { min-width: 250px; cursor: pointer; border-radius: 15px; overflow: hidden; border: 1px solid var(--gray); }
+        .card img { width: 100%; }
+
+        /* Leadership */
+        .leader-img { width: 140px; height: 140px; border-radius: 15px; border: 3px solid var(--red); object-fit: cover; margin: 10px 0; }
+        .admin-row { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 30px; }
+        .admin-card { text-align: center; width: 150px; }
+        
+        /* Glows */
+        .glow-golden { color: var(--golden); text-shadow: 0 0 10px var(--golden), 0 0 20px var(--golden), 0 0 30px var(--golden); }
+        .glow-maroon { color: var(--maroon); text-shadow: 0 0 10px var(--maroon), 0 0 20px var(--maroon); }
+        .glow-blue { color: var(--blue); text-shadow: 0 0 10px var(--blue), 0 0 20px var(--blue); }
+        .glow-rose { color: var(--rose); text-shadow: 0 0 10px var(--rose), 0 0 20px var(--rose); }
+        .glow-yellow { color: var(--yellow); text-shadow: 0 0 10px var(--yellow), 0 0 20px var(--yellow); }
+        .role-title { font-weight: 800; font-size: 1.1rem; text-transform: uppercase; margin-bottom: 5px; }
+
+        /* Overlays */
+        .overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center; align-items: center; }
+        
+        /* Language Selection Buttons */
+        .rules-content { display: flex; flex-direction: column; gap: 15px; text-align: center; }
+        .lang-btn { 
+            display: block; width: 250px; background: var(--gray); color: var(--white); 
+            padding: 15px; border-radius: 10px; text-decoration: none; font-weight: bold; 
+            border: 1px solid var(--red); transition: 0.3s;
+        }
+        .lang-btn:hover { background: var(--red); transform: scale(1.05); }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="https://discord.gg/vpCbnSjW2j" target="_blank"><img src="https://raw.githubusercontent.com/25Hzblade/torrous.github.io/refs/heads/main/icons8-discord-48.png" class="discord-btn"></a>
+        <div class="nav-center">
+            <a href="#home">Начало</a>
+            <a href="#seasons">Сезони</a>
+            <a href="#events">Събития</a>
+            <a href="#development">Развитие</a>
+            <a href="#graphics">Графика</a>
+            <a href="#leadership">Ръководство</a>
+        </div>
+        <a href="javascript:void(0)" class="rules-btn" onclick="document.getElementById('rules-overlay').style.display='flex'">Правила</a>
+    </nav>
+
+    <section id="home" style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <h1 style="color: var(--red); font-size: 4rem; text-shadow: 0 0 20px var(--red);">РЪКОВОДСТВО ЗА ИГРАЧИ НА LAST Z</h1>
+        <p style="font-size: 1.5rem; text-shadow: 0 0 10px var(--white);">играй умно, печели постоянно</p>
+    </section>
+
+    <section id="seasons">
+        <h2>Сезони</h2>
+        <div class="seasons-grid">
+            <div class="season-card" onclick="window.location.href='https://wembiii.github.io/wolfteamLZ/#home'"><img src="https://raw.githubusercontent.com/wembiii/wolfteamLZarabic/refs/heads/main/ChatGPT%20Image%20May%206%2C%202026%2C%2001_37_30%20PM.png"></div>
+            <div class="season-card" onclick="window.location.href='https://lastzwiki.com/en/season-3.html'"><img src="https://raw.githubusercontent.com/wembiii/wolfteamLZarabic/refs/heads/main/ChatGPT%20Image%20May%206%2C%202026%2C%2001_40_03%20PM.png"></div>
+            <div class="season-card" onclick="window.location.href='https://lastzwiki.com/en/season-4.html'"><img src="https://raw.githubusercontent.com/wembiii/wolfteamLZarabic/refs/heads/main/ChatGPT%20Image%20May%206%2C%202026%2C%2001_39_29%20PM.png"></div>
+            <div class="season-card" onclick="document.getElementById('lightbox').style.display='flex'; document.getElementById('lb-img').src='https://raw.githubusercontent.com/wembiii/wolfteamLZarabic/refs/heads/main/vddvdv.jpg'"><img src="https://raw.githubusercontent.com/wembiii/wolfteamLZarabic/refs/heads/main/ChatGPT%20Image%20May%206%2C%202026%2C%2001_41_30%20PM.png"></div>
+        </div>
+    </section>
+
+    <section id="events">
+        <div class="content-box">
+            <img src="https://raw.githubusercontent.com/25Hzblade/torrous.github.io/refs/heads/main/full%20preparedness.png" class="bg-img">
+            <div class="content-inner">
+                <h2>Пълна готовност</h2>
+                <table>
+                    <tr><th>ТЕМА</th><th>ИЗТОЧНИК НА ТОЧКИ (6 т. всеки)</th><th>РЕЗЮМЕ</th></tr>
+                    <tr><td>Модифицирано превозно средство</td><td>15 дневни бумъра</td><td>Пазете гаечни ключове / чертежи на всяка цена за понеделник. Правете само бумъри/зомбита</td></tr>
+                    <tr><td>Подобряване на убежище</td><td>Ускорения за сгради</td><td>Правете само ако е задължително, ако не е, пазете всички ускорения за вторник</td></tr>
+                    <tr><td>Епоха на науката</td><td>Ускорения за изследвания</td><td>Правете само ако е задължително, ако не е, пазете всички ускорения за сряда</td></tr>
+                    <tr><td>Разширяване на армията</td><td>Обучение на войски</td><td>Правете това ежедневно, но спестявайте ускоренията за петък, доколкото можете</td></tr>
+                    <tr><td>Инициатива на героите</td><td>XP на герои</td><td>Правете това ежедневно, но избягвайте да харчите твърде много, ако не можете да достигнете #1 в пълната готовност</td></tr>
+                </table>
+                <div class="note">ЗАБЕЛЕЖКА: Трябва ви 18 точки, за да достигнете финалната награда в „Пълна готовност“, така че се фокусирайте върху задачите, които ви дават точки и не влияят на прогреса ви в дуела на алиансите (като Разширяване на армията, Инициатива на героите, Модифицирано превозно средство)</div>
+            </div>
+        </div>
+
+        <div class="content-box">
+            <img src="https://raw.githubusercontent.com/25Hzblade/torrous.github.io/refs/heads/main/Dynamic%20VS%20logo%20with%20vibrant%20sparks.png" class="bg-img">
+            <div class="content-inner">
+                <h2>Дуел на алианси</h2>
+                <table>
+                    <tr><th>ДЕН</th><th>ТЕМА</th><th>ЗАДЪЛЖИТЕЛНО</th><th>КАКВО НОСИ ТОЧКИ</th></tr>
+                    <tr><td>Понеделник</td><td>Модифицирано превозно средство</td><td>Започнете да пазите радарни събития 1 ½ дни преди понеделник</td><td>Чертежи, гаечни ключове, бумъри, зомбита, радарни събития, кутия с компоненти за модифицирано превозно средство</td></tr>
+                    <tr><td>Вторник</td><td>Подобряване на убежище</td><td>Задръжте строежите до вторник, за да печелите точки чрез мощност на структурата</td><td>Ускорения за сгради, набиране на бежанци, <span class="text-orange">Оранжеви</span> мисии за награда</td></tr>
+                    <tr><td>Сряда</td><td>Епоха на науката</td><td>Пазете значки за изследвания за този ден</td><td>Ускорения за изследвания, значки, ескорт на <span class="text-orange">Оранжеви</span> камиони</td></tr>
+                    <tr><td>Четвъртък</td><td>Инициатива на героите</td><td>Пазете фрагменти / ядра за мощност за този ден</td><td><span class="text-orange">Оранжеви</span>/<span class="text-purple">Лилави</span>/<span class="text-blue">Сини</span> фрагменти, ядра за мощност, сплави за подобрение, билети за първокласно набиране, <span class="text-orange">Оранжеви</span> книги с умения</td></tr>
+                    <tr><td>Петък</td><td>Цялостен растеж</td><td>Трябва да започнете да пазите радара 2 дни преди този ден</td><td>Ускорения за обучение, радарни събития</td></tr>
+                    <tr><td>Събота</td><td>Унищожител на врагове</td><td>ПУСНЕТЕ ЩИТ, АКО СТЕ НЕАКТИВНИ ПРЕЗ ДЕНЯ</td><td>Победете единици от T7 до T10, ескорт на <span class="text-orange">Оранжеви</span> камиони</td></tr>
+                </table>
+                <div class="note">ЗАБЕЛЕЖКА: Във вторник / сряда / петък се препоръчва да използвате ускоренията въз основа на времето, когато имате събитието „Пълна готовност“</div>
+            </div>
+        </div>
+
+        <div class="content-box">
+            <h2>Месечен цикъл на събитията</h2>
+            <ul>
+                <li>1-ва седмица (Събития, базирани на фрагменти) -> Въртележка / Магазин на Камила / Дуел на шампиони</li>
+                <li>2-ра седмица (Събития, базирани на подобряване на танкове) -> Gacha GO / Светлината на Зората</li>
+                <li>3-та седмица (Събития, базирани на оборудване) -> Плячката на бикоокото (Bullseye Booty)</li>
+                <li>4-та седмица (Базирани на значки за изследвания / гориво / ускорения) -> Lucky Discounter</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="development">
+        <div class="content-box">
+            <img src="https://raw.githubusercontent.com/25Hzblade/torrous.github.io/refs/heads/main/ChatGPT%20Image%20Mar%2021%2C%202026%2C%2006_46_37%20AM%20(1).png" class="bg-img">
+            <div class="content-inner">
+                <h2>Начини за получаване на фрагменти за герои всяка седмица</h2>
+                <ul>
+                    <li>Опасността дебне (рали срещу бумъри): <span class="text-orange">x1 Оранжев фрагмент</span> / <span class="text-purple">x5 Лилави фрагмента</span> -> ЕЖЕДНЕВНО</li>
+                    <li>Пълна готовност (финална награда): <span class="text-orange">x2 Оранжеви фрагмента</span> / <span class="text-purple">x7 Лилави фрагмента</span> -> ЕЖЕДНЕВНО</li>
+                    <li>Седмична награда за подаръци: <span class="text-orange">x6 Оранжеви фрагмента</span> -> СЕДМИЧНО</li>
+                    <li>Сага зомбита (ниво 9): <span class="text-orange">x24 Оранжеви фрагмента</span> -> СЕДМИЧНО</li>
+                    <li>Магазин за слава: <span class="text-orange">x10 Оранжеви фрагмента</span> -> СЕДМИЧНО</li>
+                    <li>Оранжеви / Лилави камиони: <span class="text-orange">x4 ~ x12 Оранжеви фрагмента</span> -> ЕЖЕДНЕВНО</li>
+                </ul>
+            </div>
+        </div>
+        <div class="content-box">
+            <img src="https://raw.githubusercontent.com/25Hzblade/torrous.github.io/refs/heads/main/Futuristic%20research%20facility%20with%20geodesic%20dome.png" class="bg-img">
+            <div class="content-inner">
+                <h2>Приоритет на изследванията</h2>
+                <ol style="margin-left: 20px;">
+                    <li>Нов дом</li><li>Елитни войски</li><li>Обучение на герои</li><li>Управление на щаба</li><li>Военни стратегии</li><li>Мирен щит</li><li>Обсада за завземане</li>
+                </ol>
+                <div class="note">ЗАБЕЛЕЖКА: ПРИЗНАНИЕ НА АЛИАНСА е <span class="text-mandatory">задължително</span>, развивайте го, докато правите и други изследвания. Не игнорирайте признанието на алианса, тъй като може да ви даде много награди, след като го МАКСИМИЗИРАТЕ</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="graphics">
+        <h2>Графика</h2>
+        <div class="slider">
+            <div class="card" onclick="document.getElementById('lightbox').style.display='flex'; document.getElementById('lb-img').src=this.querySelector('img').src"><img src="https://raw.githubusercontent.com/25Hzblade/torrous.github.io/refs/heads/main/Zombie%20seige.png"></div>
+            <div class="card" onclick="document.getElementById('lightbox').style.display='flex'; document.getElementById('lb-img').src=this.querySelector('img').src"><img src="https://raw.githubusercontent.com/25Hzblade/torrous.github.io/refs/heads/main/alliance%20duel%20full.png"></div>
+            <div class="card" onclick="document.getElementById('lightbox').style.display='flex'; document.getElementById('lb-img').src=this.querySelector('img').src"><img src="https://raw.githubusercontent.com/25Hzblade/torrous.github.io/refs/heads/main/development.png"></div>
+            <div class="card" onclick="document.getElementById('lightbox').style.display='flex'; document.getElementById('lb-img').src=this.querySelector('img').src"><img src="https://raw.githubusercontent.com/25Hzblade/torrous.github.io/refs/heads/main/furylord.png"></div>
+            <div class="card" onclick="document.getElementById('lightbox').style.display='flex'; document.getElementById('lb-img').src=this.querySelector('img').src"><img src="https://raw.githubusercontent.com/25Hzblade/torrous.github.io/refs/heads/main/state%20ruler%202.png"></div>
+        </div>
+        <p style="text-align: center; margin-top: 20px;">създадено от Trayola <3</p>
+    </section>
+
+    <section id="leadership">
+        <h2>Ръководство</h2>
+        <div class="content-box" style="text-align: center;">
+            <div style="margin-bottom: 50px;">
+                <div class="role-title glow-golden">ЛИДЕР</div>
+                <img src="https://raw.githubusercontent.com/25Hzblade/torrous.github.io/refs/heads/main/Trayola.PNG" class="leader-img">
+                <div style="font-weight: bold; font-size: 1.1rem;">Trayola</div>
+            </div>
+
+            <div class="admin-row">
+                <div class="admin-card">
+                    <div class="role-title glow-maroon">ВОЕНАЧАЛНИК</div>
+                    <img src="https://raw.githubusercontent.com/wembiii/wolfteamLZ/refs/heads/main/whoiska%20warlord.PNG" class="leader-img">
+                    <div style="font-weight: bold;">WhoisKA</div>
+                </div>
+                <div class="admin-card">
+                    <div class="role-title glow-blue">ВЕРБОВЧИК</div>
+                    <img src="https://raw.githubusercontent.com/25Hzblade/torrous.github.io/refs/heads/main/Scrummy.PNG" class="leader-img">
+                    <div style="font-weight: bold;">Scrummy31</div>
+                </div>
+                <div class="admin-card">
+                    <div class="role-title glow-rose">МУЗА</div>
+                    <img src="https://raw.githubusercontent.com/25Hzblade/torrous.github.io/refs/heads/main/VALQUIRIA.PNG" class="leader-img">
+                    <div style="font-weight: bold;">VALQUIRIA-</div>
+                </div>
+                <div class="admin-card">
+                    <div class="role-title glow-yellow">ИКОНОМ</div>
+                    <img src="https://raw.githubusercontent.com/25Hzblade/torrous.github.io/refs/heads/main/Despotic%20Dave%20-%20BUTLER.PNG" class="leader-img">
+                    <div style="font-weight: bold;">Despotic dave</div>
+                </div>
+            </div>
+
+            <div class="admin-row">
+                <div class="admin-card">
+                    <img src="https://raw.githubusercontent.com/wembiii/wolfteamLZ/refs/heads/main/Paliko.PNG" class="leader-img">
+                    <div style="font-weight: bold;">Paliko</div>
+                </div>
+                <div class="admin-card">
+                    <img src="https://raw.githubusercontent.com/25Hzblade/torrous.github.io/refs/heads/main/Mi-reh%20-%20RECRUITER.PNG" class="leader-img">
+                    <div style="font-weight: bold;">Mi-reh</div>
+                </div>
+                <div class="admin-card">
+                    <img src="https://raw.githubusercontent.com/25Hzblade/torrous.github.io/refs/heads/main/SHA227.PNG" class="leader-img">
+                    <div style="font-weight: bold;">SHA227</div>
+                </div>
+                <div class="admin-card">
+                    <img src="https://raw.githubusercontent.com/wembiii/wolfteamLZ/refs/heads/main/mahmoud.PNG" class="leader-img">
+                    <div style="font-weight: bold;">Mahmoud12</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="overlay" id="rules-overlay" onclick="this.style.display='none'">
+        <div class="rules-content" onclick="event.stopPropagation()">
+            <h2 style="margin-bottom: 20px;">Избери език</h2>
+            <a href="https://wembiii.github.io/rules-EN/" class="lang-btn">Английски</a>
+            <a href="https://wembiii.github.io/rules-TR/" class="lang-btn">Турски</a>
+            <a href="https://wembiii.github.io/rules-BG/" class="lang-btn">Български</a>
+            <a href="https://wembiii.github.io/rules-PL/" class="lang-btn">Полски</a>
+            <a href="https://wembiii.github.io/rules-AR/" class="lang-btn">Арабски</a>
+            <p style="margin-top: 20px; font-size: 0.8rem; opacity: 0.7;">Кликни навсякъде, за да затвориш</p>
+        </div>
+    </div>
+
+    <div class="overlay" id="lightbox" onclick="this.style.display='none'">
+        <img id="lb-img" style="max-width:90%; max-height:80%; border-radius:15px; border:2px solid white;">
+    </div>
+
+</body>
+</html>
